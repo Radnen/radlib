@@ -53,11 +53,13 @@ var Resources = ({
 	*  - immediately loads all of the content into respective subfolders.
 	**/
 	loadAll: function() {
-		this.loadRenderer();
-		FlipScreen();
+		Loader.drawProgress(this.imagePath);
 		this.load(this.images, this.imagePath, LoadImage);
-		this.load(this.sounds, this.soundPath, LoadSound); // loaded into memory
+		Loader.drawProgress(this.soundPath);
+		this.load(this.sounds, this.soundPath, LoadSound);
+		Loader.drawProgress(this.fontPath);
 		this.load(this.fonts, this.fontPath, LoadFont);
+		Loader.drawProgress(this.windowstylePath);
 		this.load(this.windowstyles, this.windowstylesPath, LoadWindowStyle);
 		
 		// Rad-Lib Specifics:

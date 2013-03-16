@@ -24,6 +24,7 @@ RequireScript("radlib/input.js");
 RequireScript("radlib/image.js");
 RequireScript("radlib/json2.js");
 RequireScript("radlib/list.js");
+RequireScript("radlib/loader.js");
 RequireScript("radlib/mouse.js");
 RequireScript("radlib/path.js");
 RequireScript("radlib/resources.js");
