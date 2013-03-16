@@ -29,7 +29,7 @@ Resources.loadAll();
 function game() {
     // this sets up some hooklists for
     // SetUpdateScript and SetRenderScript
-    Game.setup();
+    Game.init();
 							   
     // this allows the state manager
     // to run on top of the map engine.
@@ -52,9 +52,9 @@ to view a log list of errors and warnings in your active code.
 Finished Libraries
 ==================
 
-- [ ] core radlib library
-- [ ] radgui
-- [ ] radact
+- [x] radlib: the core library
+- [x] radgui: the ui library
+- [ ] radact: the action library
 
 Credits
 =======
