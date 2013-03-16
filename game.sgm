@@ -1,0 +1,6 @@
+author=Andrew Helenius
+description=Radlib game library
+name=RadLib
+screen_height=300
+screen_width=400
+script=main.js
