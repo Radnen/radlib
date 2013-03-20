@@ -1,21 +1,17 @@
 /**
 * Script: radlib.js
-* Written by: Radnen
-* Updated: 3/13/2013
+* Written by: Andrew Helenius
+* Updated: 3/20/2013
 **/
 
 RequireScript("radlib/radextend.js");
 
 // Load the functional library:
 RequireScript("radlib/animation.js");
-RequireScript("radlib/animator.js");
 RequireScript("radlib/assert.js");
 RequireScript("radlib/audio.js");
-RequireScript("radlib/behaviorcontainer.js");
-RequireScript("radlib/behaviors.js");
 RequireScript("radlib/colors.js");
 RequireScript("radlib/debug.js");
-RequireScript("radlib/entity.js");
 RequireScript("radlib/event.js");
 RequireScript("radlib/game.js");
 RequireScript("radlib/hooklist.js");
@@ -31,7 +27,7 @@ RequireScript("radlib/resources.js");
 RequireScript("radlib/savefile.js");
 RequireScript("radlib/state.js");
 RequireScript("radlib/statemanager.js");
-RequireScript("radlib/time.js");
+RequireScript("radlib/timer.js");
 RequireScript("radlib/valuelerper.js");
 
 RequireScript("radlib/persist/persist.js");

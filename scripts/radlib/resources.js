@@ -1,7 +1,7 @@
 /**
 * Script: resources.js
 * Written by: Radnen
-* Updated: 3/13/2013
+* Updated: 3/20/2013
 **/
 
 /**
@@ -15,80 +15,71 @@
 *    folders, "face.png" can be in any subfolder
 *    of /images, but accessed no differently.
 **/
-var Resources = ({
-	// Default Paths Are Defined as Follows:
-	imagePath        : "images",
-	soundPath        : "sounds",
-	fontPath         : "fonts",
-	scriptPath       : "scripts",
-	windowstylesPath : "windowstyles",
-	
-	registered: ["png", "bmp", "gif", "tga", "jpg", "wav", "flac", "rss", "rfn", "rws", "js"],
+var Resources = (function(){
+	var Types = ["png", "bmp", "gif", "tga", "jpg", "wav", "flac", "rss", "rfn", "rws"];
 	
 	// public-access objects that hold loaded data:
-	images       : {},
-	fonts        : {},
-	music        : {},
-	sounds       : {},
-	windowstyles : {},
+	var Images = {}, Fonts = {}, Sounds = {}, Windowstyles = {};
+	
+	var array = []; // pointer to current loading array
+	var func = null; // pointer to current loading function
+
+	function IsValid(file) {
+		return List.contains(Types, function(i) { return i == file; });
+	}
+		
+	function Load(path) {
+		List.foreach(GetDirectoryList(path), function(dir) {
+			Load(path + "/" + dir);
+		});
+		
+		List.foreach(GetFileList(path), function(file) {
+			var str = file.split(".");
+			if (IsValid(str[str.length-1]))
+				array[str[0]] = func(path + "/" + file);
+		});
+	}
 	
 	/**
-	* loadRenderer();
-	*  - overload this function to have a custom blited image.
-	**/
-	loadRenderer: function() {
-		Lib.drawCenteredText(Lib.SW/2, Lib.SH/2, "Loading Content...");
-	},
-	
-	/**
-	* isValid(path : string);
-	*  - used internally to check if a path is of a valid type.
-	**/
-	isValid: function(path) {
-		return List.contains(this.registered, function(i) { return i == path; });
-	},
-	
-	/**
-	* loadAll();
+	* LoadAll();
 	*  - immediately loads all of the content into respective subfolders.
 	**/
-	loadAll: function() {
-		Loader.drawProgress(this.imagePath);
-		this.load(this.images, this.imagePath, LoadImage);
-		Loader.drawProgress(this.soundPath);
-		this.load(this.sounds, this.soundPath, LoadSound);
-		Loader.drawProgress(this.fontPath);
-		this.load(this.fonts, this.fontPath, LoadFont);
-		Loader.drawProgress(this.windowstylePath);
-		this.load(this.windowstyles, this.windowstylesPath, LoadWindowStyle);
+	function LoadAll() {
+		var t = GetTime();
+		Loader.drawProgress("Images");
+		LoadInto(Images, "~/images", LoadImage);
+		Loader.drawProgress("Sounds");
+		LoadInto(Sounds, "~/sounds", LoadSound);
+		Loader.drawProgress("Fonts");
+		LoadInto(Fonts, "~/fonts", LoadFont);
+		Loader.drawProgress("Windowstyles");
+		LoadInto(Windowstyles, "~/windowstyles", LoadWindowStyle);
 		
 		// Rad-Lib Specifics:
-		if (this.images.cursor)
-			Lib.cursor = this.images.cursor;
+		if (Images.cursor) Lib.cursor = Images.cursor;
 		
-		Debug.log("Loaded Resources");
-	},
-	
+		Debug.log(FormatString("Loaded Resources: in {?} ms", GetTime() - t));
+	}
+		
 	/**
-	* Loads all contents from path into array.
-	*  - array: array or object to hold tsuff in.
+	* LoadInto(arr : array, root : string, fun : function);
+	*  - array: array or object to hold the files in.
 	*  - path: the filepath of the root folder to start loading from.
-	*  - func: has to be any one of sphere's load functions.
+	*  - func: any one of sphere's load functions.
 	**/
-	load: function(array, path, func) {
-		var dirs = GetDirectoryList(path);
-		for(var i = 0; i < dirs.length; ++i) {
-			this.load(array, path+"/"+dirs[i], func);
-		}
-		
-		var files = GetFileList(path);
-		try {
-			List.foreach(files, function(file) {
-				var str = file.split(".");
-				var t = this.isValid(str[str.length-1]);
-				if (t) array[str[0]] = func("../"+path+"/"+file);
-			}, this);
-		}
-		catch (e) { Debug.abort(e + ", " + path); }
-	},
-});
+	function LoadInto(arr, root, fun) {
+		array = arr;
+		func = fun;
+		path = root;
+		Load(root);
+	}
+	
+	return {
+		loadAll: LoadAll,
+		loadInto: LoadInto,
+		images: Images,
+		fonts: Fonts,
+		sounds: Sounds,
+		windowstyles: Windowstyles
+	}
+})();

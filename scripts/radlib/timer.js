@@ -1,7 +1,7 @@
 /**
-* Script: time.js
+* Script: timer.js
 * Written by: Radnen
-* Updated: 3/4/2013
+* Updated: 3/20/2013
 **/
 
 /* Game Time Package: */
@@ -18,11 +18,8 @@ function Timer(interval)
 }
 
 Timer.prototype.start = function(i) {
-	if (i == undefined) i = this.interval;
-	
-	if (!Assert.is(i, "number")) Debug.log("Timer.start: Arg 0 not a number.", LIB_ERROR);
-	
-	this.interval = i;
+	if (!Assert.is(i, "number")) { Debug.log("Timer.start: Arg 0 not a number.", LIB_ERROR); return; }
+	if (i != undefined) this.interval = i;
 	this.time = GetTime() + this.interval;
 }
 

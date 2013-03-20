@@ -1,7 +1,7 @@
 /**
 * Script: debug.js
-* Written by: Radnen
-* Updated: 3/13/2013
+* Written by: Unknown
+* Updated: 3/20/2013
 **/
 
 RequireScript("radlib/game.js");
@@ -209,10 +209,11 @@ var Debug = (function() {
 		
 		for (var i = 0; i < s.length; ++i) {
 			if (!s[i]) { s.splice(i, 1); i--; continue; }
-			s[i] = s[i].split("@")[1];
-			t    = s[i].split(":");
-			if (t[0].length > 0) s[i] = (i+1) + ". " + t[0] + ": " + (Number(t[1])+1); // correct line numbers
-			else { s.splice(i, 1); i--; }
+			t = s[i].split("@")[1].split(":");
+			if (t[0].length > 0)
+				s[i] = (i + 1) + ". " + t[0] + ": " + (Number(t[1])+1); // correct line numbers
+			else
+				{ s.splice(i, 1); i--; }
 		}
 		
 		log.push({msg: str, state: state, stack: s});

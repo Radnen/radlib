@@ -1,14 +1,18 @@
 /**
 * Script: animator.js
-* Written by: Andrew Helenius
-* Updated: 12/17/2012
+* Written by: Radnen
+* Updated: 3/20/2013
 **/
 
 function Animator(person) {
 	this.anims = {};
 	this.last = -1;
-	if (person instanceof Entity) this.entity = person;
-	else if (typeof person == "string") this.entity = new Entity(person);
+	this.entity = null;
+	
+	if (person instanceof Entity)
+		this.entity = person;
+	else if (typeof person == "string")
+		this.entity = new Entity(person);
 }
 
 Animator.prototype.registerAction = function(direction, frame, func) {

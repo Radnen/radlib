@@ -1,7 +1,7 @@
 /**
 * Script: main.js
 * Written by: Andrew Helenius
-* Updated: 3/15/2013
+* Updated: 3/20/2013
 **/
 
 // Require the only script needed to get a radlib game off the ground
@@ -14,6 +14,9 @@ Resources.loadAll();
 // Require the extra radgui library only after resources are loaded in
 // This is because the library would make use of those resources.
 RequireScript("radgui/radgui.js");
+
+// Require other additions:
+RequireScript("radact/radact.js");
 
 function EmptyState() {
 	State.call(this, "Empty");
