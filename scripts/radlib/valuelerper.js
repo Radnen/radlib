@@ -1,7 +1,7 @@
 /**
 * Script: valuelerper.js
-* Written by: Radnen
-* Updated: 3/4/2013
+* Written by: Andrew Helenius
+* Updated: 3/25/2013
 **/
 
 /**
@@ -27,9 +27,9 @@ function ValueLerper(initial) {
 * - 'lerp' stands for 'linear interpolation'.
 **/
 ValueLerper.prototype.lerp = function(a, b, d) {
-	if (!Assert.is(a, "number")) { Debug.alert("ValueLerper.lerp: Arg 0 not a number.", LIB_WARN); a = 0; }
-	if (!Assert.is(b, "number")) { Debug.alert("ValueLerper.lerp: Arg 1 not a number.", LIB_WARN); b = 0; }
-	if (!Assert.is(d, "number")) { Debug.alert("ValueLerper.lerp: Arg 2 not a number.", LIB_WARN); d = 0; }
+	if (!Assert.is(a, "number")) { Debug.log("ValueLerper.lerp: Arg 0 not a number.", LIB_WARN); a = 0; }
+	if (!Assert.is(b, "number")) { Debug.log("ValueLerper.lerp: Arg 1 not a number.", LIB_WARN); b = 0; }
+	if (!Assert.is(d, "number")) { Debug.log("ValueLerper.lerp: Arg 2 not a number.", LIB_WARN); d = 0; }
 	
 	this.from  = this.value = a;
 	this.time  = GetTime();
@@ -46,7 +46,7 @@ ValueLerper.prototype.lerp = function(a, b, d) {
 ValueLerper.prototype.update = function() {
 	var d = Math.min(1, (GetTime() - this.time) / this.msecs);
 	this.value = Lib.lerp(this.from, this.to, d);
-	return (this.value != this.to);
+	return this.value != this.to;
 }
 
 /**
@@ -55,5 +55,5 @@ ValueLerper.prototype.update = function() {
 * - returns true if the lerp has finished.
 **/
 ValueLerper.prototype.isFinished = function() {
-	return (this.value == this.to);
+	return this.value == this.to;
 }

@@ -1,7 +1,7 @@
 /**
 * Script: savefile.js
-* Written by: Radnen
-* Updated: 3/15/2013
+* Written by: Andrew Helenius
+* Updated: 3/25/2013
 **/
 
 RequireScript("radlib/json2.js");
@@ -47,7 +47,7 @@ SaveFile.prototype.get = function(key, other) {
 	}
 	
 	if (!(key in this.content)) {
-		Debug.log(FormatString("Key {?} doesn't exist in file.", key), LIB_WARN);
+		Debug.log("Key {?} doesn't exist in file.", key, LIB_WARN);
 		return other;
 	}
 	
@@ -83,7 +83,7 @@ SaveFile.prototype.save = function(filename) {
 	file.write(CreateByteArrayFromString(JSON.stringify(this.content)));
 	file.close();
 
-	Debug.log(FormatString("Saved File: {?}", filename), LIB_GOOD);
+	Debug.log("Saved File: {?}", filename, LIB_GOOD);
 }
 
 /**
@@ -96,7 +96,7 @@ SaveFile.prototype.load = function(filename) {
 	if (filename.indexOf(".") < 0) filename += ".sav";
 
 	if (!Assert.fileExists("~/other/", filename)) {
-		Debug.log(FormatString("File {?} doesn't exist!", filename), LIB_ERROR);
+		Debug.log("File {?} doesn't exist!", filename, LIB_ERROR);
 		return;
 	}
 	
@@ -104,5 +104,5 @@ SaveFile.prototype.load = function(filename) {
 	this.content = JSON.parse(CreateStringFromByteArray(file.read(file.getSize())));
 	file.close();
 	
-	Debug.log(FormatString("Loaded File: {?}", filename), LIB_GOOD);
+	Debug.log("Loaded File: {?}", filename, LIB_GOOD);
 }

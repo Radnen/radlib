@@ -1,7 +1,7 @@
 /**
 * Script: hooklist.js
-* Written by: Andrew Helenius
-* Updated: 12/16/2012
+* Written by: Radnen
+* Updated: 3/25/2013
 **/
 
 function HookList() {
@@ -19,14 +19,13 @@ HookList.prototype.sort = function() {
 }
 
 HookList.prototype.setPriority = function(key, priority) {
-	List.foreach(this.hooks, function(hook) {
-		if (hook.key == key) hook.pr = priority;
-	});
+	var hook = List.get(this.hooks, function(hook) { return hook.key == key; });
+	hook.pr = priority;
 	this.sort();
 }
 
 HookList.prototype.remove = function(key) {
-	List.remove(this.hooks, key, "key");
+	List.remove(this.hooks, function(hook) { return hook.key == key; });
 }
 
 HookList.prototype.update = function() {
@@ -36,11 +35,11 @@ HookList.prototype.update = function() {
 }
 
 HookList.prototype.pause = function(key) {
-	var hook = List.get(this.hooks, key, "key");
+	var hook = List.get(this.hooks, function(hook) { return hook.key == key; });
 	hook.paused = true;
 }
 
 HookList.prototype.unpause = function(key) {
-	var hook = List.get(this.hooks, key, "key");
+	var hook = List.get(this.hooks, function(hook) { return hook.key == key; });
 	hook.paused = false;
 }

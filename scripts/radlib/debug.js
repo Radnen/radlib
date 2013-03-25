@@ -1,7 +1,7 @@
 /**
 * Script: debug.js
-* Written by: Unknown
-* Updated: 3/20/2013
+* Written by: Radnen
+* Updated: 3/25/2013
 **/
 
 RequireScript("radlib/game.js");
@@ -202,6 +202,7 @@ var Debug = (function() {
 	}
 		
 	function Log(str, state) {
+		var state = arguments[arguments.length-1];
 		if (!state) state = LIB_NORM;
 		
 		var s = new Error().stack.split("\n"), t;
@@ -216,7 +217,7 @@ var Debug = (function() {
 				{ s.splice(i, 1); i--; }
 		}
 		
-		log.push({msg: str, state: state, stack: s});
+		log.push({msg: FormatString.apply(null, arguments), state: state, stack: s});
 	}
 	
 	function ShowLast() {

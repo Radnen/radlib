@@ -1,7 +1,7 @@
 /**
 * Script: event.js
-* Written by: Radnen
-* Updated: 3/15/2013
+* Written by: Andrew Helenius
+* Updated: 3/25/2013
 **/
 
 /**
@@ -45,15 +45,13 @@ Event.prototype.add = function(func, sender) {
 	if (sender === undefined) sender = null;
 	
 	if (!Assert.is(func, "function")) {
-		var str = FormatString("Event for {?} must be a function.", this.getParentName());
-		Debug.log(str, LIB_ERROR);
-		func = function() { };
+		Debug.log("Arg0 not of function type.", LIB_ERROR);
+		return;
 	}
 	
 	if (!Assert.is(sender, "object")) {
-		var str = FormatString("Sender of Event for {?} must be an object.", this.getParentName());
-		Debug.log(str, LIB_ERROR);
-		sender = null;
+		Debug.log("Arg1 not of object type.", LIB_ERROR);
+		return;
 	}
 	
 	this.queue.push({func: func, sender: sender});

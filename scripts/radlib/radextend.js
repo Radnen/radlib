@@ -1,7 +1,7 @@
 /**
 * Script: radextend.js
 * Written by: Radnen
-* Updated: 3/13/2013
+* Updated: 3/25/2013
 **/
 
 // These functions extend the flexibility of radlib.
@@ -43,17 +43,20 @@ function FormatString(s) {
 function Serialize(obj)
 {
 	function Make(obj) {
-		var o = { zztype: obj.constructor.name };
+		var o = Assert.isArray(obj) ? [] : { zztype: obj.constructor.name };
+		
 		for (var i in obj) {
-			if (!Assert.isArray(obj[i]) && Assert.is(obj[i], "object"))
-				o[i] = Make(obj[i]);
-			else
-				o[i] = obj[i];
+			if (Assert.is(obj[i], "object")) o[i] = Make(obj[i]);
+			else o[i] = obj[i];
 		}
+		
 		return o;
 	}
 	
-	return JSON.stringify(Make(obj));
+	if(Assert.is(obj, "object"))
+		return JSON.stringify(Make(obj));
+	else
+		return JSON.stringify(obj);
 }
 
 /**
@@ -63,15 +66,22 @@ function Serialize(obj)
 function Deserialize(s)
 {
 	function Make(o) {
-		Debug.log(o.zztype);
-		var f = new Function("return new " + o.zztype + "();");
-		var obj = f();
-		for (var i in o) {
-			if (!Assert.isArray(o[i]) && Assert.is(o[i], "object"))
-				obj[i] = Make(o[i]);
-			else
-				obj[i] = o[i];
+		var obj = [];
+		
+		if (!Assert.isArray(o)) {
+			if (o.zztype in this) obj = new this[o.zztype]();
+			else {
+				Debug.log("Can't deserialize type: {?}", o.zztype, LIB_ERROR);
+				return;
+			}
 		}
+		
+		for (var i in o) {
+			if (Assert.is(o[i], "object")) obj[i] = Make(o[i]);
+			else obj[i] = o[i];
+		}
+		
+		if (!Assert.isArray(obj)) delete obj.zztype;
 		return obj;
 	}
 	

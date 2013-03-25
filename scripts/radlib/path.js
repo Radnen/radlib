@@ -1,7 +1,7 @@
 /**
 * Script: path.js
-* Written by: Radnen
-* Updated: 3/12/2013
+* Written by: Andrew Helenius
+* Updated: 3/25/2013
 **/
 
 /**
@@ -30,8 +30,14 @@ var Path = (function() {
 			return path;
 	}
 	
+	function GetFileExt(path) {
+		var parts = string.split('.');
+		return parts[parts.length - 1];
+	}
+	
 	return {
 		getFileName: GetFileName,
 		getRootDirectory: GetRootDirectory,
+		getFileExt: GetFileExt,
 	};
 })();

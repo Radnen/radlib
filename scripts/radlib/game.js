@@ -1,7 +1,7 @@
 /**
 * Script: game.js
-* Written by: Radnen
-* Updated: 3/15/2013
+* Written by: Andrew Helenius
+* Updated: 3/25/2013
 **/
 
 RequireScript("radlib/hooklist.js");
@@ -35,16 +35,20 @@ var Game = (function() {
 	*    character, giving him a camera and input.
 	**/
 	function CreatePlayer(name, spriteset) {
-		if (!name || !Assert.is(name, "string"))
-			Debug.abort("Can't create player: invalid name", 1);
-		
+		if (!name || !Assert.is(name, "string")) {
+			Debug.log("Can't create player: invalid name.", LIB_ERROR);
+			return;
+		}
+					
+		if (!spriteset || !Assert.is(spriteset, "string")) {
+			Debug.log("Can't create player: invalid spriteset.", LIB_ERROR);
+			return;
+		}
+
 		if (name == "")
-			Debug.log("Warning: empty name for player character.");
-			
-		if (!spriteset || !Assert.is(spriteset, "string"))
-			Debug.abort("Can't create player: invalid spriteset", 1);
+			Debug.log("Empty name for player character.", LIB_WARN);
 		
-		Game.player = new Entity(name);
+		if (this["Entity"]) Game.player = new Entity(name);
 		CreatePerson(name, spriteset, false);
 		AttachCamera(name);
 		AttachInput(name);

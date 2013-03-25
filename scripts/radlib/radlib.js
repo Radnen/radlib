@@ -30,11 +30,9 @@ RequireScript("radlib/statemanager.js");
 RequireScript("radlib/timer.js");
 RequireScript("radlib/valuelerper.js");
 
-RequireScript("radlib/persist/persist.js");
-
 var Lib = (function() {
 	var author = "Andrew \"Radnen\" Helenius";
-	var version = 0.75;
+	var version = 0.80;
 	
 	/* Basic, optional intro feature to add to your game. */
 	function ShowIntro() {
