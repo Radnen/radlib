@@ -3,13 +3,15 @@ RadLib
 
 Sphere RPG Engine Game Library
 
+Official Website: http://radnen.tengudev.com/radlib.html
+
 Usage
 =====
 
 Drop it into your Sphere game project and then call:
 
 ```javascript
-RequireScript('RadLib.js');
+RequireScript('radlib/radlib.js');
 ```
 
 Demo
@@ -22,26 +24,36 @@ Get your game up and running in seconds with the resource and state managers!
 // include all other core radlib files.
 RequireScript("radlib/radlib.js");
 
+// optinally, you may want to add packages such as the
+// radgui library so that you can add intersting menus
+// to the game via the state manager.
+RequireScript("radgui/radgui.js");
+
 // the content pipeline loads all of your games resources
-// into this object (such as Resources.images, etc.)
+// into this object (images can be accessed from Resources.images, etc.)
 Resources.loadAll();
 
 function game() {
     // this sets up some hooklists for
     // SetUpdateScript and SetRenderScript
     Game.init();
-							   
+    
     // this allows the state manager
     // to run on top of the map engine.
     // only do this if you use the map
     // engine.
     Game.attachStateManager();
-	
-	// then run the game engine like normal
-	MapEngine("a_map_here.rmp", 60);
-	
-	// or: StateManager.execute(); if you only use states in your game
-	// or a mixture of states and the default map engine.
+    
+    // this is will quickly create a player character,
+    // attaching the camera, input, and setting their
+    // frame revert all at once.
+    Game.createPlayer("name_here", "some_spriteset.rss");
+    
+    // then run the game engine like normal
+    MapEngine("a_map_here.rmp", 60);
+    
+    // or: StateManager.execute(); if you only use states in your game
+    // or: a mixture of states and the default map engine.
 }
 ```
 
