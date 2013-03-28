@@ -1,10 +1,16 @@
 /**
 * Script: debug.js
-* Written by: Radnen
-* Updated: 3/25/2013
+* Written by: Andrew Helenius
+* Updated: 3/27/2013
 **/
 
-RequireScript("radlib/game.js");
+/**
+* Debug Package
+* ============================================
+* - An essential part of the radlib library.
+*   It provides a layer for observing the
+*   error reports of your code while in-game.
+**/
 
 const LIB_NORM  = 0;
 const LIB_GOOD  = 1;

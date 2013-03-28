@@ -1,7 +1,7 @@
 /**
 * Script: path.js
 * Written by: Andrew Helenius
-* Updated: 3/25/2013
+* Updated: 3/27/2013
 **/
 
 /**
@@ -14,30 +14,33 @@
 **/
 
 var Path = (function() {
-	function GetFileName(string) {
-		var s = string.replace(/\\/g, '/');
-		var parts = string.split('/');
-		return parts[parts.length-1];
+	function GetFileName(path) {
+		return path.replace(/\\/g, '/').split('/').pop();
 	}
 	
 	function GetRootDirectory(path) {
-		var s = string.replace(/\\/g, '/');
-		var parts = string.split('/');
+		var s = path.replace(/\\/g, '/').split('/');
 		
-		if (parts.length > 1)
-			return parts[parts.length-2];
+		if (s.length > 1)
+			return s[s.length - 2];
 		else
-			return path;
+			return s[0];
+	}
+	
+	function GetSaveName(path) {
+		return path.replace(/\\/g, '/').split('/').pop().split('.')[0];
 	}
 	
 	function GetFileExt(path) {
-		var parts = string.split('.');
+		var parts = path.split('.');
 		return parts[parts.length - 1];
 	}
+
 	
 	return {
 		getFileName: GetFileName,
-		getRootDirectory: GetRootDirectory,
 		getFileExt: GetFileExt,
+		getSaveName: GetSaveName,
+		getRootDirectory: GetRootDirectory,
 	};
 })();

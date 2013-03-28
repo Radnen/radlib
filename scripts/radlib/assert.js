@@ -1,7 +1,7 @@
 /**
 * Script: assert.js
-* Written by: Radnen
-* Updated: 3/13/2013
+* Written by: Andrew Helenius
+* Updated: 3/27/2013
 **/
 
 /**
@@ -19,7 +19,7 @@ var Assert = (function(){
 	}
 	
 	function IsNullOrEmpty(str) {
-		return !str | str == "";
+		return !str || str == "";
 	}
 	
 	function Equals(o1, o2) {

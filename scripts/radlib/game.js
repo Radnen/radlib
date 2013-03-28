@@ -1,7 +1,7 @@
 /**
 * Script: game.js
 * Written by: Andrew Helenius
-* Updated: 3/25/2013
+* Updated: 3/27/2013
 **/
 
 RequireScript("radlib/hooklist.js");
@@ -48,7 +48,7 @@ var Game = (function() {
 		if (name == "")
 			Debug.log("Empty name for player character.", LIB_WARN);
 		
-		if (this["Entity"]) Game.player = new Entity(name);
+		if (global["Entity"]) Game.player = new Entity(name);
 		CreatePerson(name, spriteset, false);
 		AttachCamera(name);
 		AttachInput(name);

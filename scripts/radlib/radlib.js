@@ -1,10 +1,11 @@
 /**
 * Script: radlib.js
 * Written by: Andrew Helenius
-* Updated: 3/20/2013
+* Updated: 3/27/2013
 **/
 
-RequireScript("radlib/radextend.js");
+// Create an access point to the global object from anywhere
+var global = this;
 
 // Load the functional library:
 RequireScript("radlib/animation.js");
@@ -23,6 +24,7 @@ RequireScript("radlib/list.js");
 RequireScript("radlib/loader.js");
 RequireScript("radlib/mouse.js");
 RequireScript("radlib/path.js");
+RequireScript("radlib/radextend.js");
 RequireScript("radlib/resources.js");
 RequireScript("radlib/savefile.js");
 RequireScript("radlib/state.js");
@@ -82,24 +84,14 @@ var Lib = (function() {
 		
 		/* System Resources: */
 		arrow: GetSystemArrow(),
+		cursor: null,
 		downArrow: GetSystemDownArrow(),
 		font: GetSystemFont(),
 		SW: GetScreenWidth(),
 		SH: GetScreenHeight(),
 		upArrow: GetSystemUpArrow(),
 		windowstyle: GetSystemWindowStyle(),
-		
-		/* Cursor Properties: */
-		cursor: null,
-		cursorHotspot: {x: 0, y: 0},
-		cursorColor: CreateColor(255, 255, 255),
-		drawCursor: function() {
-			if (!this.cursor) return;
-			var x = GetMouseX() - this.cursorHotspot.x;
-			var y = GetMouseY() - this.cursorHotspot.y;
-			this.cursor.blitMask(x, y, this.cursorColor);
-		},
-		
+				
 		/* System Functions */
 		getVersionString: VersionString,
 		drawText: function(x, y, text, color) {

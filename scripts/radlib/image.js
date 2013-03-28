@@ -1,11 +1,21 @@
 /**
 * Script: image.js
 * Written by: Andrew Helenius
-* Updated: 12/19/2012
+* Updated: 3/27/2013
 **/
 
+/**
+* RadImage(image : image);
+* - creates an image wrapper that has access to
+*   pixel-perfect lookup and various blitting modes.
+**/
 function RadImage(image)
-{	
+{
+	if (!image || image.toString() != "[object image]") {
+		Debug.alert("Arg0 not of Sphere image type.");
+		return;
+	}
+	
 	this.base_image = image;
 	this.image = image;
 	this.canvas = null;
@@ -57,20 +67,4 @@ RadImage.prototype.collidesWith = function(x1, y1, radimg, x2, y2) {
 	}
 	
 	return false;
-}
-
-function CreateRectangle(width, height, color) {
-	return CreateSurface(width, height, color).createImage();
-}
-
-function CreateGradient(w, h, ur, ul, lr, ll)
-{
-	var surf = CreateSurface(w, h, Colors.white);
-	surf.gradientRectangle(0, 0, w, h, ur, ul, lr, ll);
-	return surf.createImage();
-}
-
-function CreateScaledImage(image, width, height)
-{
-	return image.createSurface().rescale(width, height).createImage();
 }

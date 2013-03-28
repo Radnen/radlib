@@ -1,7 +1,7 @@
 /**
 * Script: savefile.js
 * Written by: Andrew Helenius
-* Updated: 3/25/2013
+* Updated: 3/28/2013
 **/
 
 RequireScript("radlib/json2.js");
@@ -27,8 +27,7 @@ function SaveFile(name)
 **/
 SaveFile.prototype.store = function(key, value) {
 	if (!Assert.is(key, "string")) {
-		Debug.log("Store: Key not a string.", LIB_ERROR);
-		return;
+		Debug.log("Arg0 not of string type.", LIB_ERROR); return;
 	}
 	
 	this.content[key] = value;
@@ -42,7 +41,7 @@ SaveFile.prototype.store = function(key, value) {
 **/
 SaveFile.prototype.get = function(key, other) {
 	if (!Assert.is(key, "string")) {
-		Debug.log("Get: Key not a string.", LIB_ERROR);
+		Debug.log("Arg0 not of string type.", LIB_ERROR);
 		return other;
 	}
 	
@@ -59,6 +58,10 @@ SaveFile.prototype.get = function(key, other) {
 *  - Use this to store an object and preserve its type.
 **/
 SaveFile.prototype.storeObject = function(key, value) {
+	if (!Assert.is(key, "string")) {
+		Debug.log("Arg0 not of string type.", LIB_ERROR); return;
+	}
+
 	this.store(key, Serialize(o));
 }
 
@@ -67,6 +70,10 @@ SaveFile.prototype.storeObject = function(key, value) {
 *  - Use this to perfectly recall an object.
 **/
 SaveFile.prototype.getObject = function(key) {
+	if (!Assert.is(key, "string")) {
+		Debug.log("Arg0 not of string type.", LIB_ERROR); return;
+	}
+
 	return Deserialize(this.get(key, "{}"));
 }
 
@@ -75,7 +82,9 @@ SaveFile.prototype.getObject = function(key) {
 *  - Saves the save file to your storage device.
 **/
 SaveFile.prototype.save = function(filename) {
-	if (!Assert.is(filename, "string")) { Debug.log("Filename not a string.", LIB_ERROR); return; }
+	if (!Assert.is(filename, "string")) {
+		Debug.log("Filename not of string type.", LIB_ERROR); return;
+	}
 	
 	if (filename.indexOf(".") < 0) filename += ".sav";
 
@@ -91,7 +100,9 @@ SaveFile.prototype.save = function(filename) {
 *  - Opens and reads in the contents of the save file.
 **/
 SaveFile.prototype.load = function(filename) {
-	if (!Assert.is(filename, "string")) { Debug.log("Filename not a string.", LIB_ERROR); return; }
+	if (!Assert.is(filename, "string")) {
+		Debug.log("Filename not of string type.", LIB_ERROR); return;
+	}
 
 	if (filename.indexOf(".") < 0) filename += ".sav";
 

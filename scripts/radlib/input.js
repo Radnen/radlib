@@ -1,7 +1,7 @@
 /**
 * Script: input.js
-* Written by: Radnen
-* Updated: 3/4/2013
+* Written by: Andrew Helenius
+* Updated: 3/28/2013
 **/
 
 /**
@@ -53,7 +53,7 @@ function InputGroup(num) {
 }
 
 InputGroup.prototype.save = function(file) {
-	var ctrls = CloneProps(this);
+	var ctrls = ShallowClone(this);
 	delete ctrls.u_keys;
 	delete ctrls.d_keys;
 	delete ctrls.u_buttons;

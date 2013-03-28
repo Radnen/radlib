@@ -1,7 +1,7 @@
 /**
 * Script: audio.js
-* Written by: Radnen
-* Updated: 3/15/2013
+* Written by: Andrew Helenius
+* Updated: 3/27/2013
 **/
 
 /**
@@ -31,7 +31,16 @@ var Audio = (function() {
 	*  - Streams music from your storage device.
 	**/
 	function Play(filename) {
-		if (Assert.isNullOrEmpty(filename)) return;
+		if (Assert.isNullOrEmpty(filename)) {
+			Debug.log("Played an empty sound", LIB_WARN);
+			return;
+		}
+		
+		if (!Assert.is(filename, "string")) {
+			Debug.log("Arg0 not of string type.", LIB_ERROR);
+			return;
+		}
+		
 		if (songs[0]) songs[0].stop();
 		
 		var s = new Song(filename);
@@ -57,6 +66,11 @@ var Audio = (function() {
 	*  - Plays a sound object.
 	**/
 	function PlaySound(sound) {
+		if (!sound || sound.toString() != "[object sound]") {
+			Debug.log("Not a sound: {?}", sound.toString(), LIB_ERROR);
+			return;
+		}
+		
 		if (sound.isPlaying()) sound.stop();
 		sound.play(false);
 		sound.setVolume(this.svolume);

@@ -1,7 +1,7 @@
 /**
 * Script: statemanager.js
 * Written by: Andrew Helenius
-* Updated: 3/25/2013
+* Updated: 3/27/2013
 **/
 
 RequireScript("radlib/valuelerper.js");
@@ -135,6 +135,8 @@ var StateManager = (function(){
 			SaveScreen();
 			request_s = false;
 		}
+
+		Mouse.draw(Lib.cursor);
 	}
 	
 	/**
@@ -142,13 +144,12 @@ var StateManager = (function(){
 	*  - updates and renders the states.
 	**/
 	function Execute(fps) {
-		if (fps) { SetFrameRate(fps); Debug.log("State Manager Executed at {?} FPS", fps); }
-		else Debug.log("State Manager Executed");
+		if (fps) { SetFrameRate(fps); Debug.log(FormatString("State Manager Executed at {?} FPS", fps)); }
+		else Debug.log(FormatString("State Manager Executed", fps));
 		
 		while (states.length) {
 			Update();
 			Render();
-			Lib.drawCursor();
 			FlipScreen();
 		}
 	}
@@ -191,24 +192,24 @@ var StateManager = (function(){
 	*  - state: the state object to remove or, the name of state
 	*           object to find and remove.
 	**/
-	function RemoveState(statename) {
-		if (!Assert.is(statename, "string") || !Assert.is(statename, "object")) {
-			Debug.log("Wrong type for state removal: {?}", typeof statename, LIB_ERROR);
+	function RemoveState(state) {
+		if (!Assert.is(state, "string") && !Assert.is(state, "object")) {
+			Debug.log(FormatString("Wrong type for state removal: {?}", state), LIB_ERROR);
 			return;
 		}
 		
 		if (states.length == 1) { states = []; return; }
 		
-		if (!Assert.is(statename, "string")) { statename = statename.name; }
+		if (!Assert.is(state, "string")) { state = state.name; }
 		
-		if (states[states.length-1].name == statename) {
+		if (states[states.length-1].name == state) {
 			var state = states.pop();
 			state.onLeave.execute();
 			states[states.length-1].active = true;
 			states[states.length-1].onEnter.execute();
 		}
 		else {
-			List.remove(states, function(state) { return state.name == statename; });
+			List.remove(states, state, "name");
 		}
 	}
 	

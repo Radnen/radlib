@@ -1,7 +1,7 @@
 /**
 * Script: resources.js
-* Written by: Radnen
-* Updated: 3/20/2013
+* Written by: Andrew Helenius
+* Updated: 3/27/2013
 **/
 
 /**
@@ -34,9 +34,10 @@ var Resources = (function(){
 		});
 		
 		List.foreach(GetFileList(path), function(file) {
-			var str = file.split(".");
-			if (IsValid(str[str.length-1]))
-				array[str[0]] = func(path + "/" + file);
+			var s = file.split('.');
+			if (IsValid(s[s.length - 1])) {
+				array[s[s.length - 2]] = func("." + path + "/" + file);
+			}
 		});
 	}
 	
@@ -47,13 +48,13 @@ var Resources = (function(){
 	function LoadAll() {
 		var t = GetTime();
 		Loader.drawProgress("Images");
-		LoadInto(Images, "~/images", LoadImage);
+		LoadInto(Images, "./images", LoadImage);
 		Loader.drawProgress("Sounds");
-		LoadInto(Sounds, "~/sounds", LoadSound);
+		LoadInto(Sounds, "./sounds", LoadSound);
 		Loader.drawProgress("Fonts");
-		LoadInto(Fonts, "~/fonts", LoadFont);
+		LoadInto(Fonts, "./fonts", LoadFont);
 		Loader.drawProgress("Windowstyles");
-		LoadInto(Windowstyles, "~/windowstyles", LoadWindowStyle);
+		LoadInto(Windowstyles, "./windowstyles", LoadWindowStyle);
 		
 		// Rad-Lib Specifics:
 		if (Images.cursor) Lib.cursor = Images.cursor;
@@ -70,7 +71,6 @@ var Resources = (function(){
 	function LoadInto(arr, root, fun) {
 		array = arr;
 		func = fun;
-		path = root;
 		Load(root);
 	}
 	

@@ -1,7 +1,7 @@
 /**
 * Script: valuelerper.js
 * Written by: Andrew Helenius
-* Updated: 3/25/2013
+* Updated: 3/27/2013
 **/
 
 /**
@@ -27,9 +27,10 @@ function ValueLerper(initial) {
 * - 'lerp' stands for 'linear interpolation'.
 **/
 ValueLerper.prototype.lerp = function(a, b, d) {
-	if (!Assert.is(a, "number")) { Debug.log("ValueLerper.lerp: Arg 0 not a number.", LIB_WARN); a = 0; }
-	if (!Assert.is(b, "number")) { Debug.log("ValueLerper.lerp: Arg 1 not a number.", LIB_WARN); b = 0; }
-	if (!Assert.is(d, "number")) { Debug.log("ValueLerper.lerp: Arg 2 not a number.", LIB_WARN); d = 0; }
+	if (!Assert.is(a, "number")) { Debug.log("Arg 0 not a number.", LIB_ERROR); a = 0; }
+	if (!Assert.is(b, "number")) { Debug.log("Arg 1 not a number.", LIB_ERROR); b = 0; }
+	if (!Assert.is(d, "number")) { Debug.log("Arg 2 not a number.", LIB_ERROR); d = 0; }
+	if (d <= 0) { Debug.log("Arg2 is <= 0", LIB_WARN); }
 	
 	this.from  = this.value = a;
 	this.time  = GetTime();

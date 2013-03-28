@@ -1,7 +1,7 @@
 /**
 * Script: mouse.js
-* Written by: Radnen
-* Updated: 3/12/2013
+* Written by: Andrew Helenius
+* Updated: 3/27/2013
 **/
 
 var Mouse = (function() {
@@ -50,7 +50,13 @@ var Mouse = (function() {
 		return x > xx && y > yy && x <= xx + w && y <= yy + h;
 	}
 	
+	function Draw(image, fade) {
+		image.blit(x, y);
+		if (fade) image.blit(last_x, last_y);
+	}
+	
 	return {
+		draw: Draw,
 		isIdle: IsIdle,
 		isMoving: IsMoving,
 		onDouble: OnDouble,

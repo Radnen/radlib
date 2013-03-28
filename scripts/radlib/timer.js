@@ -1,7 +1,7 @@
 /**
 * Script: timer.js
-* Written by: Radnen
-* Updated: 3/20/2013
+* Written by: Andrew Helenius
+* Updated: 3/27/2013
 **/
 
 /* Game Time Package: */
@@ -18,20 +18,20 @@ function Timer(interval)
 }
 
 Timer.prototype.start = function(i) {
-	if (!Assert.is(i, "number")) { Debug.log("Timer.start: Arg 0 not a number.", LIB_ERROR); return; }
+	if (!Assert.is(i, "number")) { Debug.log("Arg 0 not a number.", LIB_ERROR); return; }
 	if (i != undefined) this.interval = i;
 	this.time = GetTime() + this.interval;
 }
 
 Timer.prototype.pause = function() {
-	if (this.paused) { Debug.log("Timer: Redundant Timer Pause.", LIB_WARN); return; }
+	if (this.paused) { Debug.log("Redundant Timer Pause.", LIB_WARN); return; }
 	this.paused = true;
 	this.pause_time = GetTime();
 	this.pause_value = this.time;
 }
 
 Timer.prototype.resume = function() {
-	if (!this.paused) { Debug.log("Timer: Redundant Timer Resume.", LIB_WARN); return; }
+	if (!this.paused) { Debug.log("Redundant Timer Resume.", LIB_WARN); return; }
 	this.paused = false;
 	this.time += GetTime() - this.pause_time;
 }
