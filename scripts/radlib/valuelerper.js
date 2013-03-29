@@ -1,7 +1,7 @@
 /**
 * Script: valuelerper.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 /**
@@ -12,6 +12,8 @@
 *   changing alpha values or panning a camera. 
 **/
 function ValueLerper(initial) {
+	if (!Assert.checkArgs(arguments, "number")) return;
+	
 	this.time  = 0;
 	this.msecs = 0;
 	this.to    = initial || 0;
@@ -27,10 +29,8 @@ function ValueLerper(initial) {
 * - 'lerp' stands for 'linear interpolation'.
 **/
 ValueLerper.prototype.lerp = function(a, b, d) {
-	if (!Assert.is(a, "number")) { Debug.log("Arg 0 not a number.", LIB_ERROR); a = 0; }
-	if (!Assert.is(b, "number")) { Debug.log("Arg 1 not a number.", LIB_ERROR); b = 0; }
-	if (!Assert.is(d, "number")) { Debug.log("Arg 2 not a number.", LIB_ERROR); d = 0; }
-	if (d <= 0) { Debug.log("Arg2 is <= 0", LIB_WARN); }
+	if (!Assert.checkArgs(arguments, "number", "number", "number")) return;
+	if (d <= 0) Debug.log("Arg2 is <= 0.", LIB_WARN);
 	
 	this.from  = this.value = a;
 	this.time  = GetTime();

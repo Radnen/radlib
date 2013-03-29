@@ -1,7 +1,7 @@
 /**
 * Script: path.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 /**
@@ -14,12 +14,14 @@
 **/
 
 var Path = (function() {
+	var crumb = /\\/g;
+
 	function GetFileName(path) {
-		return path.replace(/\\/g, '/').split('/').pop();
+		return path.replace(crumb, '/').split('/').pop();
 	}
 	
 	function GetRootDirectory(path) {
-		var s = path.replace(/\\/g, '/').split('/');
+		var s = path.replace(crumb, '/').split('/');
 		
 		if (s.length > 1)
 			return s[s.length - 2];
@@ -28,7 +30,7 @@ var Path = (function() {
 	}
 	
 	function GetSaveName(path) {
-		return path.replace(/\\/g, '/').split('/').pop().split('.')[0];
+		return path.replace(crumb, '/').split('/').pop().split('.')[0];
 	}
 	
 	function GetFileExt(path) {

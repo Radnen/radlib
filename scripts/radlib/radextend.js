@@ -1,7 +1,7 @@
 /**
 * Script: radextend.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 /**

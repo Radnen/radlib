@@ -1,7 +1,7 @@
 /**
 * Script: inherit.js
 * Written by: Radnen
-* Updated: 3/13/2013
+* Updated: 3/29/2013
 **/
 
 /**
@@ -19,6 +19,8 @@
 **/
 function Inherit(base, extend)
 {
+	if (!Assert.checkArgs(arguments, "function", "object")) return;
+
 	function Extend() {
 		Absorb(this, extend);
 		this.parent = base;

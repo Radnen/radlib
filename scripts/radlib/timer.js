@@ -1,7 +1,7 @@
 /**
 * Script: timer.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 /* Game Time Package: */
@@ -10,6 +10,8 @@ GetTime = function() { return Date.now(); }
 
 function Timer(interval)
 {
+	if (!Assert.checkArgs(arguments, "number")) return;
+
 	this.time = 0;
 	this.interval = interval || 1000;
 	this.paused = false;
@@ -18,7 +20,7 @@ function Timer(interval)
 }
 
 Timer.prototype.start = function(i) {
-	if (!Assert.is(i, "number")) { Debug.log("Arg 0 not a number.", LIB_ERROR); return; }
+	if (!Assert.checkArgs(arguments, "number")) return;
 	if (i != undefined) this.interval = i;
 	this.time = GetTime() + this.interval;
 }

@@ -1,7 +1,7 @@
 /**
 * Script: hooklist.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 /**
@@ -19,6 +19,8 @@ function HookList() {
 *   an optional priority.
 **/
 HookList.prototype.add = function(key, func, priority) {
+	if (!Assert.checkArgs(arguments, "string", "function", "number")) return;
+	
 	if (priority === undefined) priority = 0;
 	this.hooks.push({key: key, pr: priority, func: func, paused: false});
 	this.sort();
@@ -33,6 +35,7 @@ HookList.prototype.sort = function() {
 * - sets the priority of the function named by 'key'.
 **/
 HookList.prototype.setPriority = function(key, priority) {
+	if (!Assert.checkArgs(arguments, "string", "number")) return;
 	var hook = List.get(this.hooks, function(hook) { return hook.key == key; });
 	hook.pr = priority;
 	this.sort();
@@ -43,6 +46,7 @@ HookList.prototype.setPriority = function(key, priority) {
 * - removes the function named by 'key'.
 **/
 HookList.prototype.remove = function(key) {
+	if (!Assert.checkArgs(arguments, "string")) return;
 	List.remove(this.hooks, function(hook) { return hook.key == key; });
 }
 
@@ -62,6 +66,7 @@ HookList.prototype.update = function() {
 * - pauses the function named by 'key'.
 **/
 HookList.prototype.pause = function(key) {
+	if (!Assert.checkArgs(arguments, "string")) return;
 	var hook = List.get(this.hooks, function(hook) { return hook.key == key; });
 	hook.paused = true;
 }
@@ -71,6 +76,7 @@ HookList.prototype.pause = function(key) {
 * - unpauses the function named by 'key'.
 **/
 HookList.prototype.unpause = function(key) {
+	if (!Assert.checkArgs(arguments, "string")) return;
 	var hook = List.get(this.hooks, function(hook) { return hook.key == key; });
 	hook.paused = false;
 }

@@ -1,7 +1,7 @@
 /**
 * Script: state.js
 * Written by: Radnen
-* Updated: 3/15/2013
+* Updated: 3/29/2013
 **/
 
 /**
@@ -69,6 +69,7 @@ function State(name) {
 	this.fadeIn = function(time, alpha) {
 		if (!time) time = 250;
 		if (!alpha) alpha = 150;
+		if (!Assert.checkArgs(arguments, "number", "number")) return;
 		
 		this.fade = true;
 		this.alpha.lerp(0, alpha, time);
@@ -77,6 +78,7 @@ function State(name) {
 	this.fadeOut = function(time, alpha) {
 		if (!time) time = 250;
 		if (!alpha) alpha = 150;
+		if (!Assert.checkArgs(arguments, "number", "number")) return;
 		
 		this.fade = true;
 		this.alpha.lerp(alpha, 0, time);

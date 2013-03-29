@@ -1,7 +1,7 @@
 /**
 * Script: resources.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 /**
@@ -59,7 +59,7 @@ var Resources = (function(){
 		// Rad-Lib Specifics:
 		if (Images.cursor) Lib.cursor = Images.cursor;
 		
-		Debug.log(FormatString("Loaded Resources: in {?} ms", GetTime() - t));
+		Debug.log("Loaded Resources: in {?} ms", GetTime() - t);
 	}
 		
 	/**

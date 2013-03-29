@@ -1,7 +1,7 @@
 /**
 * Script: debug.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/28/2013
 **/
 
 /**
@@ -207,7 +207,7 @@ var Debug = (function() {
 		Exit();
 	}
 		
-	function Log(str, state) {
+	function Log(str) {
 		var state = arguments[arguments.length-1];
 		if (!state) state = LIB_NORM;
 		

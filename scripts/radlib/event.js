@@ -1,7 +1,7 @@
 /**
 * Script: event.js
-* Written by: Andrew Helenius
-* Updated: 3/25/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 /**
@@ -15,12 +15,8 @@
 
 function Event(parent)
 {
-	if (!Assert.is(parent, "object")) {
-		Debug.log("An Event must reference a parent object.", LIB_ERROR);
-		parent = null;
-	}
-	
 	this.parent = parent;
+	if (!Assert.checkArgs(arguments, "object")) this.parent = null;
 	this.queue = [];
 }
 
@@ -43,17 +39,7 @@ Event.prototype.execute = function() {
 **/
 Event.prototype.add = function(func, sender) {
 	if (sender === undefined) sender = null;
-	
-	if (!Assert.is(func, "function")) {
-		Debug.log("Arg0 not of function type.", LIB_ERROR);
-		return;
-	}
-	
-	if (!Assert.is(sender, "object")) {
-		Debug.log("Arg1 not of object type.", LIB_ERROR);
-		return;
-	}
-	
+	if (!Assert.checkArgs(arguments, "function", "object")) return;
 	this.queue.push({func: func, sender: sender});
 }
 
@@ -65,14 +51,6 @@ Event.prototype.add = function(func, sender) {
 *   function, optional if global or anonymous.
 **/
 Event.prototype.insert = function(func, sender) {
+	if (!Assert.checkArgs(arguments, "function", "object")) return;
 	this.queue.unshift({func: func, sender: sender});
-}
-
-/**
-* getParentName();
-* - for debug purposes; gets the name of the
-*   class of who owns this.
-**/
-Event.prototype.getParentName = function() {
-	return this.parent.constructor.name;
 }

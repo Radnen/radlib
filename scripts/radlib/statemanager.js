@@ -1,7 +1,7 @@
 /**
 * Script: statemanager.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 RequireScript("radlib/valuelerper.js");
@@ -144,7 +144,10 @@ var StateManager = (function(){
 	*  - updates and renders the states.
 	**/
 	function Execute(fps) {
-		if (fps) { SetFrameRate(fps); Debug.log(FormatString("State Manager Executed at {?} FPS", fps)); }
+		if (fps) { 
+			SetFrameRate(fps);
+			Debug.log(FormatString("State Manager Executed at {?} FPS", fps));
+		}
 		else Debug.log(FormatString("State Manager Executed", fps));
 		
 		while (states.length) {
@@ -168,6 +171,8 @@ var StateManager = (function(){
 	*  - name: the name of the state to find and return.
 	**/
 	function FindState(name) {
+		if (!Assert.checkArgs(arguments, "string")) return;
+		
 		var found = List.iterate(states, function (state) {
 			if (state.name == name) return state.name;
 		});
@@ -194,7 +199,7 @@ var StateManager = (function(){
 	**/
 	function RemoveState(state) {
 		if (!Assert.is(state, "string") && !Assert.is(state, "object")) {
-			Debug.log(FormatString("Wrong type for state removal: {?}", state), LIB_ERROR);
+			Debug.log("Wrong type for state removal: {?}", typeof state, LIB_ERROR);
 			return;
 		}
 		

@@ -1,7 +1,7 @@
 /**
 * Script: audio.js
-* Written by: Andrew Helenius
-* Updated: 3/27/2013
+* Written by: Radnen
+* Updated: 3/29/2013
 **/
 
 /**
@@ -31,13 +31,10 @@ var Audio = (function() {
 	*  - Streams music from your storage device.
 	**/
 	function Play(filename) {
-		if (Assert.isNullOrEmpty(filename)) {
-			Debug.log("Played an empty sound", LIB_WARN);
-			return;
-		}
+		if (!Assert.checkArgs(arguments, "string")) return;
 		
-		if (!Assert.is(filename, "string")) {
-			Debug.log("Arg0 not of string type.", LIB_ERROR);
+		if (!Assert.fileExists(Audio.musicPath, filename)) {
+			Debug.log("Music file '{?}' does not exist.", filename, LIB_WARN);
 			return;
 		}
 		
@@ -91,10 +88,7 @@ var Audio = (function() {
 	*    good for writing custom options files.
 	**/
 	function Save(savefile) {
-		if (!(savefile instanceof SaveFile)) {
-			Debug.log("Audio not saving into a proper savefile.", LIB_ERROR);
-			return;
-		}
+		if (!Assert.checkArgs(arguments, SaveFile)) return;
 
 		savefile.store("Audio.volume", this.volume);
 		savefile.store("Audio.svolume", this.svolume);
@@ -107,19 +101,18 @@ var Audio = (function() {
 	*    good for writing custom options files.
 	**/
 	function Load(savefile) {
-		if (!(savefile instanceof SaveFile)) {
-			Debug.log("Audio not loading from a proper savefile.", LIB_ERROR);
-			return;
-		}
+		if (!Assert.checkArgs(arguments, SaveFile)) return;
 		
-		this.volume = savefile.get("Audio.volume");
-		this.svolume = savefile.get("Audio.svolume");
-		Play(savefile.get("Audio.music"));
+		this.volume = savefile.get("Audio.volume", 255);
+		this.svolume = savefile.get("Audio.svolume", 255);
+		var music = savefile.get("Audio.music");
+		if (!Assert.isNullOrEmpty(music)) Play(music);
 	}
 	
 	return {
 		getMusicFilename: GetMusicFilename,
 		load: Load,
+		musicPath: "~/music/",
 		play: Play,
 		playSound: PlaySound,
 		stop: Stop,
