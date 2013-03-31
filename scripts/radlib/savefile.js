@@ -1,7 +1,7 @@
 /**
 * Script: savefile.js
 * Written by: Radnen
-* Updated: 3/29/2013
+* Updated: 3/30/2013
 **/
 
 RequireScript("radlib/json2.js");
@@ -60,9 +60,11 @@ SaveFile.prototype.storeObject = function(key, value) {
 * getObject(key : string);
 *  - Use this to perfectly recall an object.
 **/
-SaveFile.prototype.getObject = function(key) {
+SaveFile.prototype.getObject = function(key, other) {
 	if (!Assert.checkArgs(arguments, "string")) return;
-	return Deserialize(this.get(key, "{}"));
+	var o = this.get(key, "");
+	if (!Assert.isNullOrEmpty(o)) return Deserialize(o);
+	else return other;
 }
 
 /**

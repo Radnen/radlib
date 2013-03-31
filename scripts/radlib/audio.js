@@ -1,7 +1,7 @@
 /**
 * Script: audio.js
 * Written by: Radnen
-* Updated: 3/29/2013
+* Updated: 3/30/2013
 **/
 
 /**
@@ -88,11 +88,20 @@ var Audio = (function() {
 	*    good for writing custom options files.
 	**/
 	function Save(savefile) {
+		var separate = false;
+		
+		if (!savefile) {
+			separate = true;
+			savefile = new SaveFile();
+		}
+		
 		if (!Assert.checkArgs(arguments, SaveFile)) return;
 
 		savefile.store("Audio.volume", this.volume);
 		savefile.store("Audio.svolume", this.svolume);
 		savefile.store("Audio.music", GetMusicFilename());
+		
+		if (separate) savefile.save("audio");
 	}
 	
 	/**
@@ -100,7 +109,8 @@ var Audio = (function() {
 	*  - Loads the audio properties from a save file.
 	*    good for writing custom options files.
 	**/
-	function Load(savefile) {
+	function Load(savefile) {		
+		if (!savefile) savefile = new SaveFile("audio");
 		if (!Assert.checkArgs(arguments, SaveFile)) return;
 		
 		this.volume = savefile.get("Audio.volume", 255);
