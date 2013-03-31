@@ -17,6 +17,10 @@ RequireScript("radgui/radgui.js");
 
 // Require other additions:
 RequireScript("radact/radact.js");
+RequireScript("radscript/radscript.js");
+
+// And then any local files:
+RequireScript("parsetest.js");
 
 function EmptyState() {
 	State.call(this, "Empty");
@@ -43,3 +47,5 @@ function game() {
 	// start the game up:
 	StateManager.execute();
 }
+
+Debug.registerConsoleAction("TestScript", function() { RadParser.parse(RadLexer.lex("test.radscript")).eval(); });

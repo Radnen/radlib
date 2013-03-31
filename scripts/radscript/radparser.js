@@ -28,7 +28,7 @@ var RadParser = (function() {
 	}
 
 	Print.prototype.eval = function() {
-		Abort(this.expr.eval());
+		Debug.alert("OUT: " + this.expr.eval());
 	}
 
 	function BinExpr(type, left, right) {
