@@ -1,7 +1,7 @@
 /**
 * Script: state.js
 * Written by: Radnen
-* Updated: 3/29/2013
+* Updated: 5/8/2013
 **/
 
 /**
@@ -33,16 +33,16 @@ function State(name) {
 	/* Graphical Built-in Fading option */
 	this.color  = Colors.fromAlpha(0, Colors.black);
 	this.fade   = false;
-	this.alpha  = new ValueLerper();
+	this.alpha  = new Tween();
 	
-	this.render.add(function() { this.preRender(); });
 	this.render.add(function() {
 		if (this.fade) STATE_BG.blitMask(0, 0, this.color);
+		this.preRender();
 	});
 	
 	this.update.add(function() {
 		if (this.fade) {
-			this.alpha.update()
+			this.alpha.update();
 			this.color.alpha = this.alpha.value;
 			if (this.alpha.isFinished() && this.alpha.to == 0) {
 				this.onFadedOut.execute();
@@ -70,17 +70,19 @@ function State(name) {
 		if (!time) time = 250;
 		if (!alpha) alpha = 150;
 		if (!Assert.checkArgs(arguments, "number", "number")) return;
+		if (this.alpha.value == alpha) return;
 		
 		this.fade = true;
-		this.alpha.lerp(0, alpha, time);
+		this.alpha.setup(0, alpha, time, Tweens.quad);
 	}
 	
 	this.fadeOut = function(time, alpha) {
 		if (!time) time = 250;
-		if (!alpha) alpha = 150;
+		if (!alpha) alpha = this.alpha.value;
 		if (!Assert.checkArgs(arguments, "number", "number")) return;
+		if (this.alpha.value == 0) return;
 		
 		this.fade = true;
-		this.alpha.lerp(alpha, 0, time);
+		this.alpha.setup(alpha, 0, time, Tweens.quad);
 	}
 }

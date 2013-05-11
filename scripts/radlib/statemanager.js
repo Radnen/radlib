@@ -1,10 +1,10 @@
 /**
 * Script: statemanager.js
 * Written by: Radnen
-* Updated: 3/29/2013
+* Updated: 5/10/2013
 **/
 
-RequireScript("radlib/valuelerper.js");
+RequireScript("radlib/tween.js");
 
 /**
  * StateManager Package
@@ -21,7 +21,7 @@ var StateManager = (function(){
 	
 	var color = Colors.fromAlpha(0, Colors.white);
 	var screenshot = "";
-	var alpha = new ValueLerper();
+	var alpha = new Tween();
 	
 	function SaveScreen() {
 		CreateDirectory("~/images/screenshots");
@@ -38,7 +38,7 @@ var StateManager = (function(){
 		if (file) {
 			screenshot = sh;
 			s.save(file);
-			alpha.lerp(0, 1, 500);
+			alpha.setup(0, 1, 500);
 		}
 	}
 	
@@ -99,16 +99,13 @@ var StateManager = (function(){
 		var state = states[states.length - 1];
 		state.update.execute();
 		
+		if (Input.onKeyDown(KEY_INSERT)) { request_s = true; }
+		
 		while (AreKeysLeft()) {
 			var key = GetKey();
-			
-			if (key == KEY_INSERT) {
-				request_s = true;
-			}
-			
 			// Give priority to debug console, if available.
 			Debug.updateConsole(key);
-			if (!Debug.open) state.onInput(key);
+			if (!Debug.open) { state.onInput(key); }
 		}
 		
 		Mouse.update();
@@ -126,7 +123,7 @@ var StateManager = (function(){
 		if (Debug.open) Debug.track("States: " + states.length);
 				
 		if (alpha.value > 0) {
-			if (alpha.value == 1) alpha.lerp(1, 0, 500);
+			if (alpha.value == 1) alpha.setup(1, 0, 500);
 			color.alpha = alpha.value * 255;
 			Lib.font.drawText(0, 0, screenshot, color);
 		}
@@ -203,18 +200,20 @@ var StateManager = (function(){
 			return;
 		}
 		
-		if (states.length == 1) { states = []; return; }
-		
 		if (!Assert.is(state, "string")) { state = state.name; }
 		
 		if (states[states.length-1].name == state) {
-			var state = states.pop();
-			state.onLeave.execute();
-			states[states.length-1].active = true;
-			states[states.length-1].onEnter.execute();
+			var s = states.pop();
+			s.onLeave.execute();
+			if (states.length > 0) {
+				states[states.length-1].active = true;
+				states[states.length-1].onEnter.execute();
+			}
 		}
 		else {
-			List.remove(states, state, "name");
+			var o = List.get(states, List.objPropEq('name', state));
+			if (o) o.onLeave.execute();
+			List.remove(states, List.objPropEq('name', state));
 		}
 	}
 	

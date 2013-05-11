@@ -1,7 +1,7 @@
 /**
 * Script: input.js
 * Written by: Radnen
-* Updated: 3/29/2013
+* Updated: 5/6/2013
 **/
 
 /**
@@ -49,7 +49,10 @@ function InputGroup(num) {
 	this.LKey      = KEY_COMMA;
 	this.RKey      = KEY_PERIOD;
 	this.startKey  = KEY_ENTER;
-	this.selectKey = KEY_SPACE; 
+	this.selectKey = KEY_SPACE;
+	
+	this.cancelButton = this.BButton;
+	this.cancelKey = this.BKey;
 }
 
 InputGroup.prototype.save = function(file) {

@@ -1,7 +1,7 @@
 /**
 * Script: list.js
 * Written by: Radnen
-* Updated: 3/25/2013
+* Updated: 5/6/2013
 **/
 
 RequireScript("radlib/assert.js");
@@ -128,7 +128,9 @@ var List = (function() {
 	**/
 	function get(array, predicate) {
 		if (!Check(array, predicate)) return;
-		return array[indexOf(array, predicate)];
+		var pos = indexOf(array, predicate);
+		if (pos >= 0) return array[pos];
+		else return null;
 	}
 
 	return {
@@ -141,5 +143,9 @@ var List = (function() {
 		random: random,
 		remove: remove,
 		removeAt: removeAt,
+		
+		/* built-in predicates: */
+		objEq: function(item) { return function(a) { return a == item; }; },
+		objPropEq: function(prop, item) { return function(a) { return a[prop] == item; }; },
 	};
 }());

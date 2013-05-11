@@ -1,7 +1,7 @@
 /**
 * Script: assert.js
 * Written by: Radnen
-* Updated: 3/29/2013
+* Updated: 5/10/2013
 **/
 
 /**
@@ -72,7 +72,8 @@ var Assert = (function(){
 	}
 	
 	function fileExists(path, filename) {
-		return List.contains(GetFileList(path), function(file) { return filename == file; });
+		if (Is(path, "string")) path = GetFileList(path);
+		return List.contains(path, List.objEq(filename));
 	}
 	
 	return {

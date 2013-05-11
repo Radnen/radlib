@@ -1,7 +1,7 @@
 /**
 * Script: debug.js
 * Written by: Radnen
-* Updated: 3/28/2013
+* Updated: 5/6/2013
 **/
 
 /**
@@ -116,7 +116,6 @@ var Debug = (function() {
 					Resources.images.orb.blitMask(5, 2+texth+i*20, color);
 				
 				Lib.drawText(5+16, 2+texth+i*20, msg, color);
-				Lib.drawCursor();
 			}
 			
 			DrawFooter();
