@@ -1,7 +1,7 @@
 /**
 * Script: stackstate.js
-* Written by: Radnen
-* Updated: 3/4/2013
+* Written by: Andrew Helenius
+* Updated: 5/10/2013
 **/
 
 function StackState(data)
@@ -12,8 +12,8 @@ function StackState(data)
 	this.y = Lib.SH/2;
 	State.call(this, "Stack");
 	
-	this.wind_h = new ValueLerper();
-	this.alpha  = new ValueLerper();
+	this.wind_h = new Tween();
+	this.alpha  = new Tween();
 	this.data = data.join("\n");
 		
 	this.bgColor = Colors.fromAlpha(0, Colors.black);
@@ -25,8 +25,8 @@ function StackState(data)
 	}
 	
 	this.onEnter.add(function() {
-		this.wind_h.lerp(0, this.h, 250);
-		this.alpha.lerp(0, 150, 250);
+		this.wind_h.setup(0, this.h, 250);
+		this.alpha.setup(0, 150, 250);
 	});
 
 	this.update.add(function() {
@@ -59,7 +59,7 @@ function StackState(data)
 }
 
 StackState.prototype.close = function() {
-	this.wind_h.lerp(this.h, 0, 250);
-	this.alpha.lerp(150, 0, 250);
+	this.wind_h.setup(this.h, 0, 250);
+	this.alpha.setup(150, 0, 250);
 	this.closed = true;
 }

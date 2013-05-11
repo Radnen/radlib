@@ -1,7 +1,7 @@
 /**
 * Script: uistate.js
-* Written by: Radnen
-* Updated: 3/12/2013
+* Written by: Andrew Helenius
+* Updated: 5/10/2013
 **/
 
 function UIState(name, x, y, w, h)
@@ -19,35 +19,35 @@ function UIState(name, x, y, w, h)
 	/* Graphical vertical growth/shrink feature. */
 	this.closed = false;
 	this.vert   = false;
-	this.wind_h = new ValueLerper();
+	this.wind_h = new Tween();
 	this.horiz  = false;
-	this.wind_w = new ValueLerper();
+	this.wind_w = new Tween();
 	
 	this.growVert = function(time) {
 		if (!time) time = 250;
 		this.vert = true;
-		this.wind_h.lerp(0, this.h, time);
+		this.wind_h.setup(0, this.h, time);
 		this.closed = true;
 	}
 	
 	this.shrinkVert = function(time) {
 		if (!time) time = 250;
 		this.vert = true;
-		this.wind_h.lerp(this.h, 0, time);
+		this.wind_h.setup(this.h, 0, time);
 		this.closed = true;
 	}
 
 	this.growHoriz = function(time) {
 		if (!time) time = 250;
 		this.horiz = true;
-		this.wind_w.lerp(0, this.w, time);
+		this.wind_w.setup(0, this.w, time);
 		this.closed = true;
 	}
 	
 	this.shrinkHoriz = function(time) {
 		if (!time) time = 250;
 		this.horiz = true;
-		this.wind_w.lerp(this.w, 0, time);
+		this.wind_w.setup(this.w, 0, time);
 		this.closed = true;
 	}
 	
