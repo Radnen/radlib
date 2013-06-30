@@ -1,7 +1,7 @@
 /**
 * Script: radextend.js
 * Written by: Radnen
-* Updated: 5/10/2013
+* Updated: 6/27/2013
 **/
 
 /**
@@ -33,14 +33,22 @@ if (!Assert.is(Function.prototype.bind, 'function')) {
 
 /**
 * Absorb(A : object, B : object);
-*  - Puts members of B into A, returning A.
+*  - Copies B into A, returning A.
 **/
 function Absorb(A, B) {
-    for (var i in B)
-		if (Assert.is(B[i], "object")) {
+	if (A === null) return null;
+	if (A === undefined) return undefined;
+	
+    for (var i in B) {
+		if (Assert.isArray(B[i]))
+			A[i] = Absorb([], B[i]);
+		else if (Assert.is(B[i], "object")) {
+			if (B[i] === null) { A[i] = null; return; };
 			A[i] = Absorb(A[i], B[i]);
 		}
-		else { A[i] = B[i]; }
+		else
+			A[i] = B[i];
+	}
     return A;
 }
 
@@ -64,29 +72,6 @@ function FormatString(s) {
 }
 
 /**
-* Serialize(obj : object);
-*  - Use this to JSON an object; AND preserve the data type.
-**/
-function Serialize(obj)
-{
-    function Make(obj) {
-        var o = Assert.isArray(obj) ? [] : { zztype: obj.constructor.name };
-        
-        for (var i in obj) {
-            if (Assert.is(obj[i], "object")) o[i] = Make(obj[i]);
-            else o[i] = obj[i];
-        }
-        
-        return o;
-    }
-    
-    if(Assert.is(obj, "object"))
-        return JSON.stringify(Make(obj));
-    else
-        return JSON.stringify(obj);
-}
-
-/**
 * RandomArg(...);
 *  - returns: a random arg in the arg list (no matter it's type!)
 **/
@@ -107,6 +92,30 @@ function Random(min, max) {
 }
 
 /**
+* Serialize(obj : object, array);
+*  - Use this to JSON an object; AND preserve the data type.
+**/
+function Serialize(obj, type)
+{
+    function Make(obj) {
+		if (!obj) return;
+        var o = Assert.isArray(obj) ? [] : { zztype: obj.constructor.name };
+        
+        for (var i in obj) {
+            if (Assert.is(obj[i], "object")) o[i] = Make(obj[i]);
+            else o[i] = obj[i];
+        }
+        
+        return o;
+    }
+    
+    if(Assert.is(obj, "object"))
+        return JSON.stringify(Make(obj));
+    else
+        return JSON.stringify(obj);
+}
+
+/**
 * Deserialize(s : string);
 *  - Use this to parse a JSON object; AND restore the methods.
 **/
@@ -115,13 +124,16 @@ function Deserialize(s)
     function Make(o) {
         var obj = [];
         
-        if (!Assert.isArray(o)) {
-            if (o.zztype in this) obj = new global[o.zztype]();
-            else {
-                Debug.log("Can't deserialize type: {?}", o.zztype, LIB_ERROR);
-                return;
-            }
+		if (o === null || o === undefined) return;
+		
+        if (!Assert.isArray(o) && "zztype" in o && o.zztype in global) {
+			obj = new global[o.zztype]();
         }
+		else if (!Assert.isArray(o)) {
+			Debug.log("Can't deserialize: {?}", o.toSource(), LIB_ERROR);
+			Debug.alert(o instanceof Array);
+			return obj;
+		}
         
         for (var i in o) {
             if (Assert.is(o[i], "object")) obj[i] = Make(o[i]);
@@ -136,6 +148,14 @@ function Deserialize(s)
 }
 
 /**
+* DeepClone(obj : object);
+*  - generates a full, deep, and accurate copy of the object.
+**/
+function DeepClone(obj) {
+    return Deserialize(Serialize(obj));
+}
+
+/**
 * ShallowClone(obj : object);
 *  - generates a shallow copy of the object.
 **/
@@ -143,14 +163,6 @@ function ShallowClone(obj) {
     var o = new global[obj.constructor.name]();
     Absorb(o, obj);
     return o;
-}
-
-/**
-* DeepClone(obj : object);
-*  - generates a full, deep, and accurate copy of the object.
-**/
-function DeepClone(obj) {
-    return Deserialize(Serialize(obj));
 }
 
 /**

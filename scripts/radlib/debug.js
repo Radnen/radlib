@@ -1,7 +1,7 @@
 /**
 * Script: debug.js
 * Written by: Radnen
-* Updated: 5/6/2013
+* Updated: 6/27/2013
 **/
 
 /**
@@ -276,21 +276,26 @@ var Debug = (function() {
 		switch(key) {
 			case KEY_TAB: Debug.open = !Debug.open; break;
 			case KEY_UP:
-				if (m_idx < msgs.length) {
-					consoletext = msgs[m_idx];
-					m_idx++;
-				}
+				if (msgs.length == 0) return;
+				if (m_idx < msgs.length - 1) m_idx++;
+				consoletext = msgs[m_idx];
 			break;
 			case KEY_DOWN:
-				if (m_idx > 1) {
+				if (m_idx > -1) {
 					m_idx--;
-					consoletext = msgs[m_idx];
+					if (m_idx == -1) { consoletext = ""; }
+					else consoletext = msgs[m_idx];
 				}
-				else if (m_idx > 0) { consoletext = ""; m_idx = 0; }
 			break;
 			case KEY_ENTER:
 				var func;
-				if (consoletext.toLowerCase() in registered)
+				
+				// check to see if we are in arg mode:
+				if (consoletext[0] == "-") {
+					var args = consoletext.split(" ");
+					func = new Function(args[1] + "(" + args.splice(2).join(", ") + ");");
+				}
+				else if (consoletext.toLowerCase() in registered)
 					func = registered[consoletext.toLowerCase()];
 				else
 					func = new Function(consoletext);
@@ -328,6 +333,7 @@ Debug.registerConsoleAction("Log", Debug.showLog);
 Debug.registerConsoleAction("Errors", Debug.showLastError);
 Debug.registerConsoleAction("TOM", function() { Debug.extra = !Debug.extra; });
 Debug.registerConsoleAction("Exit", Exit);
+Debug.registerConsoleAction("Alert", function(value) { Debug.Alert(value); });
 
 // experimental:
 /*Abort = function(message) {

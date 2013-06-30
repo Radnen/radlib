@@ -1,7 +1,7 @@
 /**
 * Script: radlib.js
-* Written by: Radnen
-* Updated: 5/10/2013
+* Written by: Andrew Helenius
+* Updated: 6/30/2013
 **/
 
 // Create an access point to the global object from anywhere
@@ -25,6 +25,7 @@ RequireScript("radlib/loader.js");
 RequireScript("radlib/mouse.js");
 RequireScript("radlib/path.js");
 RequireScript("radlib/radextend.js");
+RequireScript("radlib/random.js");
 RequireScript("radlib/resources.js");
 RequireScript("radlib/savefile.js");
 RequireScript("radlib/state.js");
@@ -35,34 +36,68 @@ RequireScript("radlib/tween.js");
 var Lib = (function() {
     var author = "Andrew \"Radnen\" Helenius";
     var version = 0.80;
+	
+	if (GetVersion() < 1.5) Abort("Need Sphere version 1.5 and up to function correctly.");
     
     /* Basic, optional intro feature to add to your game. */
     function ShowIntro() {
-        var img, t;
+        var img, t, col = CreateColor(255, 255, 255, 0);
+		var tween = new Tween();
         
-        img = Resources.images.title;
+        img = Resources.images.radlib;
         if (GetScreenWidth() != 640 && GetScreenHeight() != 480) {      
             img = CreateScaledImage(img, GetScreenWidth(), GetScreenHeight());
         }
         
+		tween.setup(0, 255, 1000);
         t = GetTime();
-        while (t + 1000 > GetTime() && !IsAnyKeyPressed()) {
+        while (t + 1500 > GetTime() && !IsAnyKeyPressed()) {
+			tween.update();
+			col.alpha = tween.value;
             Resources.images.libbg.blit(0, 0);
-            img.blit(0, 0);
+            img.blitMask(0, 0, col);
             FlipScreen();
         }
+		
+		tween.setup(255, 0, 500);
+		while (tween.update()) {
+			col.alpha = tween.value;
+            Resources.images.libbg.blit(0, 0);
+            img.blitMask(0, 0, col);
+            FlipScreen();
+		}
 
-        img = Resources.images.sphere;
+		if (GetVersion() == 1.5) img = Resources.images.sphere15;
+		if (GetVersion() == 1.6) img = Resources.images.sphere16;
+		
         if (GetScreenWidth() != 640 && GetScreenHeight() != 480) {      
             img = CreateScaledImage(img, GetScreenWidth(), GetScreenHeight());
         }
 
+		tween.setup(0, 255, 1000);
         t = GetTime();
-        while (t + 1000 > GetTime() && !IsAnyKeyPressed()) {
+        while (t + 1500 > GetTime() && !IsAnyKeyPressed()) {
+			tween.update();
+			col.alpha = tween.value;
             Resources.images.libbg.blit(0, 0);
-            img.blit(0, 0);
+            img.blitMask(0, 0, col);
             FlipScreen();
         }
+
+		tween.setup(255, 0, 500);
+		while (tween.update()) {
+			col.alpha = tween.value;
+            Resources.images.libbg.blit(0, 0);
+            img.blitMask(0, 0, col);
+            FlipScreen();
+		}
+		
+		tween.setup(255, 0, 500);
+		while (tween.update()) {
+			col.alpha = tween.value;
+            Resources.images.libbg.blitMask(0, 0, col);
+            FlipScreen();
+		}
     }
         
     function VersionString() {
@@ -70,9 +105,8 @@ var Lib = (function() {
     }
         
     return {
-        /* Package Info: please do not change! */
-        author: author,
-        version: version,
+        get author() { return author; },
+        get version() { return version; },
         
         /* Default System Colors. (You can change them to your liking.) */
         colors: {debugBG1: CreateColor(0, 0, 0),
@@ -83,7 +117,7 @@ var Lib = (function() {
                          good: CreateColor(100, 200, 100)},
         
         /* System Resources: */
-        arrow: GetSystemArrow(),
+        arrow: LoadImage("RadLib/arrow.png"),
         cursor: null,
         downArrow: GetSystemDownArrow(),
         font: GetSystemFont(),

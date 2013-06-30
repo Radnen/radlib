@@ -1,7 +1,7 @@
 /**
 * Script: radgui.js
 * Written by: Andrew Helenius
-* Updated: 3/20/2013
+* Updated: 6/30/2013
 **/
 
 RequireFolder("radgui/ui");
@@ -16,9 +16,9 @@ var Gui = (function() {
 	}
 
 	return {
-		author: author,
-		version: version,
-		getVersionString: VersionString,
+		get author() { return author; },
+		get version() { return version; },
+		getVersionString: VersionString
 	}
 })();
 

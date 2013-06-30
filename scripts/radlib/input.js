@@ -1,7 +1,7 @@
 /**
 * Script: input.js
 * Written by: Radnen
-* Updated: 5/6/2013
+* Updated: 6/22/2013
 **/
 
 /**
@@ -29,12 +29,12 @@ function InputGroup(num) {
 		this.d_buttons[i] = false;
 	}
 		
-	this.AButton = 0;
-	this.BButton = 1;
-	this.XButton = 2;
-	this.YButton = 3;
-	this.LButton = 4;
-	this.RButton = 5;
+	this.AButton      = 0;
+	this.BButton      = 1;
+	this.XButton      = 2;
+	this.YButton      = 3;
+	this.LButton      = 4;
+	this.RButton      = 5;
 	this.selectButton = 6;
 	this.startButton  = 7;
 	
@@ -55,6 +55,47 @@ function InputGroup(num) {
 	this.cancelKey = this.BKey;
 }
 
+InputGroup.prototype = {
+	get axisLeft () { return GetJoystickAxis(this.num, JOYSTICK_AXIS_X) < -0.5; },
+	get axisRight() { return GetJoystickAxis(this.num, JOYSTICK_AXIS_X) >  0.5; },
+	get axisUp   () { return GetJoystickAxis(this.num, JOYSTICK_AXIS_Y) < -0.5; },
+	get axisDown () { return GetJoystickAxis(this.num, JOYSTICK_AXIS_Y) >  0.5; },
+}
+
+InputGroup.prototype.getKeys = function() {
+	return {
+		upKey: this.upKey,
+		downKey: this.downKey,
+		leftKey: this.leftKey,
+		rightKey: this.rightKey,
+		AKey: this.AKey,
+		BKey: this.BKey,
+		XKey: this.XKey,
+		YKey: this.YKey,
+		LKey: this.LKey,
+		RKey: this.RKey,
+		startKey: this.startKey,
+		selectKey: this.selectKey
+	};
+}
+
+InputGroup.prototype.getButtons = function() {
+	return {
+		AButton: this.AButton,
+		BButton: this.BButton,
+		XButton: this.XButton,
+		YButton: this.YButton,
+		LButton: this.LButton,
+		RButton: this.RButton,
+		selectButton: this.selectButton,
+		startButton: this.startButton
+	};
+}
+
+InputGroup.prototype.setInputs = function(inputs) {
+	for (var i in inputs) this[i] = inputs[i];
+}
+
 InputGroup.prototype.save = function(file) {
 	var ctrls = ShallowClone(this);
 	delete ctrls.u_keys;
@@ -66,13 +107,6 @@ InputGroup.prototype.save = function(file) {
 
 InputGroup.prototype.load = function(file) {
 	Absorb(this, file.get("keys"));
-}
-
-InputGroup.prototype = {
-	get axisLeft() { return GetJoystickAxis(0, JOYSTICK_AXIS_X) < -0.5; },
-	get axisRight() { return GetJoystickAxis(0, JOYSTICK_AXIS_X) > 0.5; },
-	get axisUp() { return GetJoystickAxis(0, JOYSTICK_AXIS_Y) < -0.5; },
-	get axisDown() { return GetJoystickAxis(0, JOYSTICK_AXIS_Y) > 0.5; },
 }
 
 InputGroup.prototype.onKeyUp = function(key) {

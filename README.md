@@ -1,9 +1,10 @@
 RadLib
 ======
 
-Sphere RPG Engine Game Library
+A Game Creation SDK for the Sphere RPG Game Engine
 
-Official Website: http://radnen.tengudev.com/radlib.html
+ - Official RadLib Website: http://radnen.tengudev.com/radlib.html
+ - Official Sphere Website: http://www.spheredev.org
 
 Usage
 =====
@@ -63,13 +64,13 @@ Tip:
 Press Tab to view a JS console window, and type into it 'log'
 to view a log list of errors and warnings in your active code.
 
-Finished Libraries
-==================
+Libraries
+=========
 
-- [x] radlib: the core library
-- [x] radgui: the ui library
-- [ ] radact: the action library
-- [ ] radrpg: the rpg library
+- radlib: the core game library
+- radgui: the gui library
+- radact: the action game library
+- radrpg: the rpg starter library
 
 Credits
 =======

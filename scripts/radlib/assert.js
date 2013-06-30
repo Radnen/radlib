@@ -1,7 +1,7 @@
 /**
 * Script: assert.js
 * Written by: Radnen
-* Updated: 5/10/2013
+* Updated: 5/26/2013
 **/
 
 /**
@@ -38,23 +38,23 @@ var Assert = (function(){
 	}
 	
 	function IsNullOrEmpty(str) {
-		return !str || str == "";
+		return str === null || str == "";
 	}
 	
-	function Equals(o1, o2) {
-		return o1 === o2;
+	function Equals(a, b) {
+		return a === b;
 	}
 	
-	function IsArray(arr) {	
-		return arr instanceof Array;
+	function IsArray(a) {	
+		return a instanceof Array;
 	}
 	
 	function True(test, message) {
-		if (!test) Debug.log("Error: " + message);
+		if (!test) Debug.log("Error: {?}", message, LIB_ERROR);
 	}
 
 	function False(test, message) {
-		if (test) Debug.log("Error: " + message);
+		if (test) Debug.log("Error: {?}", message, LIB_ERROR);
 	}
 	
 	function IsSphereObject(obj) {
@@ -65,6 +65,7 @@ var Assert = (function(){
 			case "[object Spriteset]":
 			case "[object Windowstyle]":
 			case "[object Sound]":
+			case "[object Color]":
 				return true;
 			break;
 		}

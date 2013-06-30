@@ -1,7 +1,7 @@
 /**
 * Script: savefile.js
 * Written by: Radnen
-* Updated: 3/30/2013
+* Updated: 5/27/2013
 **/
 
 RequireScript("radlib/json2.js");
@@ -18,7 +18,7 @@ RequireScript("radlib/json2.js");
 function SaveFile(name)
 {
 	this.content = {};	
-	if (name) this.load(name);
+	if (name !== undefined) this.load(name);
 }
 
 /**
@@ -74,9 +74,9 @@ SaveFile.prototype.getObject = function(key, other) {
 SaveFile.prototype.save = function(filename) {
 	if (!Assert.checkArgs(arguments, "string")) return;
 
-	if (filename.indexOf(".") < 0) filename += ".sav";
+	if (filename.indexOf(".sav") < 0) filename += ".sav";
 
-	var file = OpenRawFile("~/other/" + filename, true);
+	var file = OpenRawFile("~/save/" + filename, true);
 	file.write(CreateByteArrayFromString(JSON.stringify(this.content)));
 	file.close();
 
@@ -90,14 +90,14 @@ SaveFile.prototype.save = function(filename) {
 SaveFile.prototype.load = function(filename) {
 	if (!Assert.checkArgs(arguments, "string")) return;
 
-	if (filename.indexOf(".") < 0) filename += ".sav";
+	if (filename.indexOf(".sav") < 0) filename += ".sav";
 
-	if (!Assert.fileExists("~/other/", filename)) {
+	if (!Path.exists("~/save/" + filename)) {
 		Debug.log("File '{?}' doesn't exist!", filename, LIB_ERROR);
 		return;
 	}
 	
-	var file = OpenRawFile("~/other/" + filename);
+	var file = OpenRawFile("~/save/" + filename);
 	this.content = JSON.parse(CreateStringFromByteArray(file.read(file.getSize())));
 	file.close();
 	

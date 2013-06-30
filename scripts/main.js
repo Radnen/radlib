@@ -1,7 +1,7 @@
 /**
 * Script: main.js
 * Written by: Andrew Helenius
-* Updated: 3/20/2013
+* Updated: 6/30/2013
 **/
 
 // Require the only script needed to get a radlib game off the ground
@@ -18,9 +18,13 @@ RequireScript("radgui/radgui.js");
 // Require other additions:
 RequireScript("radact/radact.js");
 RequireScript("radscript/radscript.js");
+RequireScript("radrpg/radrpg.js");
 
 // And then any local files:
 RequireScript("parsetest.js");
+
+// To show the standard mouse just enable it in the state manager:
+StateManager.showMouse = true;
 
 function EmptyState() {
 	State.call(this, "Empty");

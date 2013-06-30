@@ -1,7 +1,7 @@
 /**
 * Script: tween.js
 * Written by: Radnen
-* Updated: 5/8/2013
+* Updated: 6/23/2013
 **/
 
 /**
@@ -39,13 +39,14 @@ var Tweens = {
 * Tween();
 *  - creates a new instance of an interpolated unit.
 **/
-function Tween() {
-    this.from  = 0;
-	this.to    = 0;
-	this.time  = 0;
-	this.start = 0;
-	this.func  = Tweens.linear;
-	this.value = 0;
+function Tween(value) {
+    this.from     =  value || 0;
+	this.to       =  value || 0;
+	this.time     = -1;
+	this.start    =  0;
+	this.func     =  Tweens.linear;
+	this.value    =  value || 0;
+	this.duration =  0;
 }
 
 /**
@@ -55,12 +56,13 @@ function Tween() {
 **/
 Tween.prototype.setup = function(from, to, duration, func) {
 	if (func === undefined) func = Tweens.linear;
-	this.from  = from;
-	this.to    = to;
-	this.time  = duration;
-	this.start = GetTime();
-	this.func  = func;
-	this.value = from;
+	this.from     = from;
+	this.to       = to;
+	this.duration = duration;
+	this.time     = duration;
+	this.start    = GetTime();
+	this.func     = func;
+	this.value    = from;
 }
 
 /**
@@ -81,9 +83,40 @@ Tween.prototype.update = function() {
 }
 
 /**
+* Tween.setValue(value : number);
+*  - sets the value of this tween to a particular value and causes it to stop.
+**/
+Tween.prototype.setValue = function(v) {
+	this.from = this.to = this.value = v;
+	this.time = -1;
+}
+
+/**
 * Tween.isFinished();
 *  - returns true when it no longer updates values.
 **/
 Tween.prototype.isFinished = function() {
 	return this.time == -1;
+}
+
+/**
+* Tween.reverse();
+*  - tweens in the opposite direction it was set up to run.
+**/
+Tween.prototype.reverse = function() {
+	var t      = this.to;
+	this.to    = this.from;
+	this.from  = t;
+	this.start = GetTime();
+	this.value = this.from;
+	this.time  = this.duration;
+}
+
+/**
+* Tween.forceFinish();
+*  - forces this tween to finish immediately.
+**/
+Tween.prototype.forceFinish = function() {
+	this.value = this.to;
+	this.time = -1;
 }

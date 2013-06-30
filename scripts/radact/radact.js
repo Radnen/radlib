@@ -1,7 +1,7 @@
 /**
 * Script: radact.js
 * Written by: Andrew Helenius
-* Updated: 3/20/2013
+* Updated: 6/30/2013
 **/
 
 RequireScript("radact/animator.js");
@@ -20,8 +20,8 @@ var Act = (function() {
 	}
 
 	return {
-		author: author,
-		version: version,
+		get author() { return author; },
+		get version() { return version; },
 		getVersionString: VersionString
 	}
 })();

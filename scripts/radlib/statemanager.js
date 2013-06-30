@@ -1,7 +1,7 @@
 /**
 * Script: statemanager.js
 * Written by: Radnen
-* Updated: 5/10/2013
+* Updated: 6/22/2013
 **/
 
 RequireScript("radlib/tween.js");
@@ -12,7 +12,7 @@ RequireScript("radlib/tween.js");
  */
 
 var StateManager = (function(){
-	var states = [];
+	var states = [], persisting = [];
 	
 	var step = 1000/60;
 	var isFixed = false;
@@ -22,6 +22,8 @@ var StateManager = (function(){
 	var color = Colors.fromAlpha(0, Colors.white);
 	var screenshot = "";
 	var alpha = new Tween();
+	
+	var mouse = false;
 	
 	function SaveScreen() {
 		CreateDirectory("~/images/screenshots");
@@ -58,11 +60,14 @@ var StateManager = (function(){
 	*  - state: the state object to add onto the state-stack.
 	**/
 	function Push(state) {
-		if (states.length > 0) {
-			states[states.length-1].active = false;
-			states[states.length-1].onLeave.execute();
+		if (state.persistent) persisting.push(state);
+		else {
+			if (states.length > 0) {
+				states[states.length-1].active = false;
+				states[states.length-1].onLeave.execute();
+			}
+			states.push(state);
 		}
-		states.push(state);
 		state.onEnter.execute();
 	}
 	
@@ -95,20 +100,24 @@ var StateManager = (function(){
 	function Update() {
 		if (states.length == 0) return;
 		alpha.update();
-		
-		var state = states[states.length - 1];
-		state.update.execute();
-		
+
 		if (Input.onKeyDown(KEY_INSERT)) { request_s = true; }
+		
+		// Give priority to debug console, if available.
+		var state = states[states.length - 1];
+		if (!Debug.open) {
+			state.update.execute();
+			List.foreach(persisting, function(s) { s.update.execute(); });
+		}
 		
 		while (AreKeysLeft()) {
 			var key = GetKey();
-			// Give priority to debug console, if available.
 			Debug.updateConsole(key);
-			if (!Debug.open) { state.onInput(key); }
+			if (!Debug.open) state.onInput(key);
 		}
-		
+
 		Mouse.update();
+		Audio.update();
 	}
 	
 	/**
@@ -117,6 +126,7 @@ var StateManager = (function(){
 	**/
 	function Render() {
 		List.foreach(states, function(state) { state.render.execute(); });
+		List.foreach(persisting, function(state) { state.render.execute(); });
 		StateManager.postRender();
 		Debug.renderConsole();
 		
@@ -133,7 +143,7 @@ var StateManager = (function(){
 			request_s = false;
 		}
 
-		Mouse.draw(Lib.cursor);
+		if (mouse) Mouse.draw(Lib.cursor);
 	}
 	
 	/**
@@ -234,5 +244,7 @@ var StateManager = (function(){
 		getStateList: GetStateList,
 		removeState: RemoveState,
 		setFixedTimestep: SetFixed,
+		get showMouse() { return mouse; },
+		set showMouse(v) { mouse = v; }
 	};
 })();

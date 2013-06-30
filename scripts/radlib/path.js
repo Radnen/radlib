@@ -1,7 +1,7 @@
 /**
 * Script: path.js
 * Written by: Radnen
-* Updated: 3/29/2013
+* Updated: 6/30/2013
 **/
 
 /**
@@ -14,19 +14,31 @@
 **/
 
 var Path = (function() {
-	var crumb = /\\/g;
-
+	var crumb  = /\\/g;
+	var init   = /((\.\.)|(~))\//g;
+	
+	function Exists(path)
+	{
+		var parts    = path.replace(crumb, "/").replace(/\.\./, "~").split("/");
+		var filename = parts.pop();
+		var dir      = parts.join("/");
+		var files    = GetFileList(dir);
+		
+		return List.contains(files, function(o) { return filename == o; });
+	}
+		
 	function GetFileName(path) {
 		return path.replace(crumb, '/').split('/').pop();
 	}
 	
 	function GetRootDirectory(path) {
-		var s = path.replace(crumb, '/').split('/');
-		
-		if (s.length > 1)
-			return s[s.length - 2];
-		else
-			return s[0];
+		var s = path.replace(init, '').replace(crumb, '/').split('/');
+		return s.length > 1 ? s[0] : "";
+	}
+	
+	function GetParentDirectory(path) {
+		path = path.replace(crumb, '/');
+		return path.slice(0, path.lastIndexOf('/'));
 	}
 	
 	function GetSaveName(path) {
@@ -34,15 +46,16 @@ var Path = (function() {
 	}
 	
 	function GetFileExt(path) {
-		var parts = path.split('.');
-		return parts[parts.length - 1];
+		return path.replace(crumb, '/').split('/').pop().split('.')[1];
 	}
-
 	
 	return {
+		exists: Exists,
 		getFileName: GetFileName,
 		getFileExt: GetFileExt,
 		getSaveName: GetSaveName,
+		getParentDirectory: GetRootDirectory,
 		getRootDirectory: GetRootDirectory,
+		get filesystem() { return filesystem; }
 	};
 })();
