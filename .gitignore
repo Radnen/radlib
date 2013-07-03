@@ -1,0 +1,8 @@
+#OS specific
+Thumbs.db
+
+#Game specific
+logs/
+
+#Sphere Editor
+tasks.list
